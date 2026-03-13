@@ -49,7 +49,7 @@ export default function Footer() {
             <div className="space-y-2.5">
               <a href="mailto:info@helayouth.org" className="flex items-center gap-2 text-sm text-stone-400 hover:text-brand-400 transition-colors">
                 <Mail className="w-4 h-4 flex-shrink-0" />
-                info@helayouth.org
+                helaselfhelpgroup2025@gmail.com
               </a>
               <a href="tel:+254700000000" className="flex items-center gap-2 text-sm text-stone-400 hover:text-brand-400 transition-colors">
                 <Phone className="w-4 h-4 flex-shrink-0" />
