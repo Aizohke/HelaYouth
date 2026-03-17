@@ -23,15 +23,21 @@ router.get('/my', ...protectedRoute, async (req, res, next) => {
 // GET /api/contributions/summary — total fund stats (public-ish)
 router.get('/summary', async (req, res, next) => {
   try {
+    
     const result = await Contribution.aggregate([
-      {
-        $group: {
-          _id: null,
-          totalFunds: { $sum: '$amount' },
-          totalContributions: { $count: {} },
-        },
-      },
-    ]);
+  {
+    $match: {
+      type: { $nin: ['registration', 'special'] },
+    },
+  },
+  {
+    $group: {
+      _id: null,
+      totalFunds: { $sum: '$amount' },
+      totalContributions: { $count: {} },
+    },
+  },
+]);
 
     const memberCount = await User.countDocuments({ status: 'approved' });
 
@@ -84,7 +90,9 @@ router.get('/member/:id', ...adminRoute, async (req, res, next) => {
       .sort({ contributionDate: -1 })
       .populate('recordedBy', 'firstName lastName');
 
-    const total = contributions.reduce((sum, c) => sum + c.amount, 0);
+    const total = contributions
+  .filter((c) => c.type !== 'registration' && c.type !== 'special')
+  .reduce((sum, c) => s + c.amount, 0);
     res.json({ success: true, contributions, total });
   } catch (error) {
     next(error);

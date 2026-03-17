@@ -12,21 +12,28 @@ router.get('/me', ...protectedRoute, async (req, res, next) => {
       .sort({ contributionDate: -1 })
       .populate('recordedBy', 'firstName lastName');
 
-    const total = contributions.reduce((sum, c) => sum + c.amount, 0);
+    const total = contributions
+  .filter((c) => c.type !== 'registration' && c.type !== 'special')
+  .reduce((sum, c) => sum + c.amount, 0);
 
     // Monthly breakdown for chart
     const monthly = await Contribution.aggregate([
-      { $match: { member: req.user._id } },
-      {
-        $group: {
-          _id: { year: { $year: '$contributionDate' }, month: { $month: '$contributionDate' } },
-          total: { $sum: '$amount' },
-          count: { $sum: 1 },
-        },
-      },
-      { $sort: { '_id.year': 1, '_id.month': 1 } },
-      { $limit: 12 },
-    ]);
+  {
+    $match: {
+      member: req.user._id,
+      type: { $nin: ['registration', 'special'] },
+    },
+  },
+  {
+    $group: {
+      _id: { year: { $year: '$contributionDate' }, month: { $month: '$contributionDate' } },
+      total: { $sum: '$amount' },
+      count: { $sum: 1 },
+    },
+  },
+  { $sort: { '_id.year': 1, '_id.month': 1 } },
+  { $limit: 12 },
+]);
 
     res.json({
       success: true,
