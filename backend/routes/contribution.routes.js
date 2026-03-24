@@ -92,7 +92,7 @@ router.get('/member/:id', ...adminRoute, async (req, res, next) => {
 
     const total = contributions
   .filter((c) => c.type !== 'registration' && c.type !== 'special')
-  .reduce((sum, c) => s + c.amount, 0);
+  .reduce((sum, c) => sum + c.amount, 0);
     res.json({ success: true, contributions, total });
   } catch (error) {
     next(error);
