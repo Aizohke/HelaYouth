@@ -2,6 +2,7 @@
 ### *The Billionaire Club* — Full-Stack Web Application
 
 Link <https://helayouthgroup.netlify.app/>
+
 A comprehensive MERN stack web application for a youth self-help group featuring member management, contribution tracking, project monitoring, and a content hub — secured with Clerk Authentication.
 
 ---
