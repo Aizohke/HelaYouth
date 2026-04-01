@@ -16,6 +16,9 @@ import contributionRoutes from './routes/contribution.routes.js';
 
 const app = express();
 
+// Tell Express it is sitting behind a proxy (like Render)
+app.set('trust proxy', 1);
+
 // Connect to MongoDB
 connectDB();
 
